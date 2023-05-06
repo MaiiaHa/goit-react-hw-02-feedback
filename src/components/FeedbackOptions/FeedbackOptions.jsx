@@ -2,28 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import css from './FeedbackOptions.module.css';
 
-const FeedbackOptions = ({
-  onIncrementGood,
-  onIncrementNeutral,
-  onIncrementBad,
-}) => (
+const FeedbackOptions = ({ options, onIncrement }) => (
   <div className={css.feedbackOptions}>
-    <button className={css.btn} type="button" onClick={onIncrementGood}>
-      Good
-    </button>
-    <button className={css.btn} type="button" onClick={onIncrementNeutral}>
-      Neutral
-    </button>
-    <button className={css.btn} type="button" onClick={onIncrementBad}>
-      Bad
-    </button>
+    {options.map(option => {
+      return (
+        <button
+          className={css.btn}
+          type="button"
+          onClick={() => {
+            onIncrement(option);
+          }}
+        >
+          {option}
+        </button>
+      );
+    })}
   </div>
 );
 
 FeedbackOptions.propTypes = {
-  onIncrementGood: PropTypes.func.isRequired,
-  onIncrementNeutral: PropTypes.func.isRequired,
-  onIncrementBad: PropTypes.func.isRequired,
+  onIncrement: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default FeedbackOptions;

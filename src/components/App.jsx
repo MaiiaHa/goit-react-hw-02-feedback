@@ -19,33 +19,27 @@ class App extends Component {
     bad: this.props.initialBad,
   };
 
-  increaseIncrementGood = () => {
+  increaseIncrement = option => {
     this.setState(currentState => ({
-      good: currentState.good + 1,
-    }));
-  };
-  increaseIncrementNeutral = () => {
-    this.setState(currentState => ({
-      neutral: currentState.neutral + 1,
-    }));
-  };
-  increaseIncrementBad = () => {
-    this.setState(currentState => ({
-      bad: currentState.bad + 1,
+      // ...currentState,
+      [option]: currentState[option] + 1,
     }));
   };
 
   countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
+    return Object.values(this.state).reduce((prev, curr) => prev + curr, 0);
   };
+
   countPositiveFeedbackPercentage = () => {
-    if (this.state.good === 0) {
-      return 0;
-    }
-    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
+    // if (this.state.good === 0) {
+    //   return 0;
+    // }
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100) || 0;
   };
 
   render() {
+    const countTotal = this.countTotalFeedback();
+
     return (
       <div
         style={{
@@ -60,19 +54,18 @@ class App extends Component {
       >
         <Section title={'Please leave feedback'}>
           <FeedbackOptions
-            onIncrementGood={this.increaseIncrementGood}
-            onIncrementNeutral={this.increaseIncrementNeutral}
-            onIncrementBad={this.increaseIncrementBad}
+            options={Object.keys(this.state)}
+            onIncrement={this.increaseIncrement}
           />
         </Section>
 
         <Section title={'Statistics'}>
-          {this.countTotalFeedback() > 0 ? (
+          {countTotal > 0 ? (
             <Statistics
               onStateGood={this.state.good}
               onStateNeutral={this.state.neutral}
               onStateBad={this.state.bad}
-              onTotal={this.countTotalFeedback()}
+              onTotal={countTotal}
               onPersentage={this.countPositiveFeedbackPercentage()}
             />
           ) : (
