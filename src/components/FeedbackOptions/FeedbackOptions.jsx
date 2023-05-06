@@ -7,6 +7,7 @@ const FeedbackOptions = ({ options, onIncrement }) => (
     {options.map(option => {
       return (
         <button
+          key={option}
           className={css.btn}
           type="button"
           onClick={() => {
